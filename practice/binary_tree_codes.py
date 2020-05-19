@@ -1,3 +1,5 @@
+stack = []
+b = []
 class node:
     def __init__(self,data = None):
         self.data = data;
@@ -7,7 +9,6 @@ class node:
 class tree:
     def __init__(self):
         self.head = node()
-
     def insert(self,data):
         temp = node(data)
         if self.head.data == None:
@@ -30,6 +31,28 @@ class tree:
                 parent.left = temp
             else:
                 parent.right = temp
+    def all_ways(self,temp): # created an empty arrays in cnstr for this method
+        global stack,b;
+        if temp == None:
+            return
+        stack.append(temp.data)
+        if temp.left == None and temp.right == None:
+            for i in stack:
+                if i not in b:
+                    b.append(i)
+            print(stack)
+            stack.pop()
+            return
+
+        else:
+            self.all_ways(temp.left)
+            self.all_ways(temp.right)
+            if temp.data in b:
+                stack.pop()
+
+            return
+
+
     def level_printing(self):
         a = [[],[]]
         k = 0;
@@ -48,11 +71,11 @@ class tree:
                 print("")
                 k = k^1
 
-    def disp_leafnodes(self,temp):
+    def disp(self,temp):
         if temp == None:
             return
-        self.disp_leafnodes(temp.left)
-        self.displeafnodes(temp.right)
+        self.disp(temp.left)
+        self.disp(temp.right)
         if temp.left == None and temp.right == None:
             print(temp.data)
         return
@@ -73,6 +96,7 @@ L = [55,6,80,9,2,1,40]
 o = tree()
 for i in L:
     o.insert(i)
-o.disp_leafnodes(o.head)
+o.disp(o.head)
 print(o.check(o.head))
 o.level_printing()
+o.all_ways(o.head)
